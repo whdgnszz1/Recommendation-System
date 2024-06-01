@@ -9,5 +9,9 @@ friend_src = os.path.join(base_src, 'friend.csv')
 # pandas의 read_csv => 데이터 불러오기
 df = pd.read_csv(friend_src, encoding='utf-8')
 
-# head() 데이터를 읽어보기
-print(df.head())
+# head() 데이터를 읽어보기 => 5개만 읽기
+print(df.head(6))
+
+new_friend_src = os.path.join(base_src, 'new_friend.csv')
+# index=False는 꼭꼭
+df.to_csv(new_friend_src, index=False, encoding='utf-8')
