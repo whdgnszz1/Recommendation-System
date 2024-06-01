@@ -1,0 +1,15 @@
+# .gitignore file example
+
+# Ignore Python bytecode
+*.pyc
+__pycache__/
+
+# Ignore virtual environment directory
+venv/
+machine_learning_data/
+
+# Ignore other OS-specific or editor-specific files
+.DS_Store
+.idea/
+.vscode/
+
