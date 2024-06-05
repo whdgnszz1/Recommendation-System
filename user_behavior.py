@@ -33,6 +33,9 @@ keys_of_interest = [
 # 모든 데이터를 저장할 데이터프레임
 all_sessions_df = pd.DataFrame()
 
+# SEARCH_KEYWORD가 있는 그룹만 저장할 데이터프레임
+search_keyword_sessions_df = pd.DataFrame()
+
 # 각 GA_SESSION_ID에 대해 파일 생성
 for session_id in multiple_sessions:
     session_df = filtered_multiple_df[filtered_multiple_df['GA_SESSION_ID'] == session_id].copy()
@@ -73,8 +76,23 @@ for session_id in multiple_sessions:
         [all_sessions_df, pd.DataFrame([[''] * all_sessions_df.shape[1]], columns=all_sessions_df.columns)],
         ignore_index=True)
 
+    # SEARCH_KEYWORD가 하나라도 있는지 확인하여 별도의 데이터프레임에 추가
+    if session_selected_df['SEARCH_KEYWORD'].notna().any():
+        search_keyword_sessions_df = pd.concat([search_keyword_sessions_df, session_selected_df], ignore_index=True)
+        # 빈 행 추가
+        search_keyword_sessions_df = pd.concat(
+            [search_keyword_sessions_df,
+             pd.DataFrame([[''] * search_keyword_sessions_df.shape[1]], columns=search_keyword_sessions_df.columns)],
+            ignore_index=True)
+
 # 모든 데이터를 합친 파일 저장
 all_output_file = os.path.join(base_src, 'all_sessions.csv')
 all_sessions_df.to_csv(all_output_file, index=False, encoding='utf-8')
 
 print(f"All sessions data saved to {all_output_file}")
+
+# SEARCH_KEYWORD가 있는 모든 데이터를 합친 파일 저장
+search_keyword_output_file = os.path.join(base_src, 'search_keyword_sessions.csv')
+search_keyword_sessions_df.to_csv(search_keyword_output_file, index=False, encoding='utf-8')
+
+print(f"Search keyword sessions data saved to {search_keyword_output_file}")
