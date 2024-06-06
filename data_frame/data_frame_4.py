@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import math
 
-base_src = 'machine_learning_data'
+base_src = '../machine_learning_data'
 # friend.csv 파일 src 변수 할당
 abalone_src = os.path.join(base_src, 'abalone.data')
 

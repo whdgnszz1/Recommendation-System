@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-base_src = 'machine_learning_data'
+base_src = '../machine_learning_data'
 # friend.csv 파일 src 변수 할당
 friend_src = os.path.join(base_src, 'friend.csv')
 
