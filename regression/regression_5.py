@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Lasso
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
@@ -57,8 +57,6 @@ def plot_learning_curves(model, x, y):
 
 
 # 학습 곡선 출력
-# plot_learning_curves(lin_reg, x_poly, y)
-
 data_num = 100
 x = 3 * np.random.rand(data_num, 1) - 1
 y = 0.2 + (x ** 2) + np.random.randn(100, 1)
@@ -67,3 +65,10 @@ polynomial_regression = Pipeline([
     ('lin_reg', LinearRegression())
 ])
 plot_learning_curves(polynomial_regression, x, y)
+
+# Lasso 회귀 모델 학습 및 예측
+lasso_reg = Lasso(alpha=0.1)
+lasso_reg.fit(x, y)
+pred = lasso_reg.predict([[1.5]])
+
+print(f"Lasso 회귀 모델의 예측값: {pred}")
