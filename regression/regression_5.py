@@ -3,6 +3,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
 import matplotlib.pyplot as plt
 
 # 데이터 개수 설정
@@ -36,6 +37,7 @@ lin_reg.fit(x_poly, y)
 # 학습된 모델의 절편(intercept)과 계수(coef)를 출력
 print(lin_reg.intercept_, lin_reg.coef_)
 
+
 # 학습 곡선 그리기 함수 정의
 def plot_learning_curves(model, x, y):
     x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.2)
@@ -53,5 +55,15 @@ def plot_learning_curves(model, x, y):
     plt.ylabel('RMSE')
     plt.show()
 
+
 # 학습 곡선 출력
-plot_learning_curves(lin_reg, x_poly, y)
+# plot_learning_curves(lin_reg, x_poly, y)
+
+data_num = 100
+x = 3 * np.random.rand(data_num, 1) - 1
+y = 0.2 + (x ** 2) + np.random.randn(100, 1)
+polynomial_regression = Pipeline([
+    ("poly_features", PolynomialFeatures(degree=4, include_bias=False)),
+    ('lin_reg', LinearRegression())
+])
+plot_learning_curves(polynomial_regression, x, y)
