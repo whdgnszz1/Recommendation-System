@@ -7,6 +7,7 @@ __pycache__/
 # Ignore virtual environment directory
 venv/
 machine_learning_data/
+dictionary/dictionary_data/
 
 # Ignore other OS-specific or editor-specific files
 .DS_Store
