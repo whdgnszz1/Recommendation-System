@@ -61,5 +61,24 @@ ratings_matrix = x_train.pivot(index='user_id', columns='movie_id', values='rati
 ##### 코사인 유사도 계산 #####
 matrix_dummy = ratings_matrix.copy().fillna(0)
 user_similarity = cosine_similarity(matrix_dummy, matrix_dummy)
+user_similarity = pd.DataFrame(user_similarity,
+                               index=ratings_matrix.index,
+                               columns=ratings_matrix.index)
 
-print(pd.DataFrame(user_similarity))
+
+##### 주어진 영화의(movie_id) 가중평균 rating을 계산하는 함수 #####
+def CF_simple(user_id, movie_id):
+    if movie_id in ratings_matrix.columns:
+        sim_scores = user_similarity[user_id].copy()
+        movie_ratings = ratings_matrix[movie_id].copy()
+        none_rating_idx = movie_ratings[movie_ratings.isnull()].index
+        movie_ratings = movie_ratings.dropna()
+        sim_scores = sim_scores.drop(none_rating_idx)
+        mean_rating = np.dot(sim_scores, movie_ratings) / sim_scores.sum()
+    else:
+        mean_rating = 3.0
+    return mean_rating
+
+
+##### 정확도 계산 #####
+print(score(CF_simple))
