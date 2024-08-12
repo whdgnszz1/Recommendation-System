@@ -102,3 +102,31 @@ def CF_knn(user_id, movie_id, neighbor_size=0):
 
 # 정확도 계산
 print(score(CF_knn, neighbor_size=30))
+
+##### 실제 주어진 사용자에 대해 추천을 받는 기능 구현 #####
+ratings_matrix = ratings.pivot_table(values='rating',
+                                     index='user_id',
+                                     columns='movie_id')
+matrix_dummy = ratings_matrix.copy().fillna(0)
+user_similarity = cosine_similarity(matrix_dummy, matrix_dummy)
+user_similarity = pd.DataFrame(user_similarity,
+                               index=ratings_matrix.index,
+                               columns=ratings_matrix.index)
+
+
+def recom_movie(user_id, n_items, neighbor_size=30):
+    user_movie = ratings_matrix.loc[user_id].copy()
+
+    for movie in ratings_matrix.columns:
+        if pd.notnull(user_movie.loc[movie]):
+            user_movie.loc[movie] = 0
+
+        else:
+            user_movie.loc[movie] = CF_knn(user_id, movie, neighbor_size)
+
+    movie_sort = user_movie.sort_values(ascending=False)[:n_items]
+    recom_movies = movies.loc[movie_sort.index]
+    recommendations = recom_movies['title']
+    return recommendations
+
+print(recom_movie(user_id=729, n_items=5, neighbor_size=30))
