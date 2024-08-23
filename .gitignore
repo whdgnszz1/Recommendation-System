@@ -8,9 +8,10 @@ __pycache__/
 venv/
 machine_learning_data/
 dictionary/dictionary_data/
+xml_data
 
 # Ignore other OS-specific or editor-specific files
 .DS_Store
 .idea/
 .vscode/
-
+generate_xml
